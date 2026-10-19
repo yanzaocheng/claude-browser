@@ -1,0 +1,14 @@
+# 运行时数据（环境配置、Cookie、浏览器 profile）
+data/
+dist/
+
+# 内核种子配置：AdsPower 私有数据，不进仓库；用 scripts/extract-kernel-assets.mjs 本地生成
+assets/sunbrowser/seed/
+assets/sunbrowser/tpl_meta.json
+
+# 本机调试产物
+node_modules/
+*.log
+*.tmp
+scripts/site-*.txt
+scripts/*.pngscripts/launcher-argv.json

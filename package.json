@@ -1,0 +1,20 @@
+{
+  "name": "fp-browser",
+  "version": "0.1.0",
+  "description": "类 AdsPower 的指纹浏览器：多环境隔离、指纹伪装、代理链、AdsPower 兼容本地 API",
+  "type": "module",
+  "main": "src/main.js",
+  "bin": {
+    "fp-browser": "src/main.js"
+  },
+  "scripts": {
+    "start": "node src/main.js",
+    "serve": "node src/main.js --no-open",
+    "package": "node scripts/package.mjs --zip",
+    "test": "node --test \"test/*.test.js\""
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT"
+}
