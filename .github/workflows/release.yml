@@ -45,8 +45,8 @@ jobs:
         shell: pwsh
         run: |
           $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
-          @"
-          ## FP Browser $version 便携版
+          $notes = @"
+## FP Browser $version 便携版
 
           解压后双击 `启动 FP Browser.bat` 即可使用：
 
@@ -55,8 +55,9 @@ jobs:
           - 环境默认用本机 Chrome / Edge 起浏览器；也可以在「设置 → 内核」切成 SunBrowser 内核
           - 想用内核模式：先装过 AdsPower 客户端，然后 `node scripts/extract-kernel-assets.mjs` 抽一份种子配置
 
-          数据保存在程序目录的 `data\` 下，整个文件夹可拷走/删除。
-          "@ | Out-File -FilePath release-notes.md -Encoding utf8
+数据保存在程序目录的 `data\` 下，整个文件夹可拷走/删除。
+"@
+          [System.IO.File]::WriteAllText("release-notes.md", $notes, (New-Object System.Text.UTF8Encoding($false)))
 
       - name: 创建 Release
         shell: pwsh
