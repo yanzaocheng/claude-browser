@@ -1,4 +1,6 @@
-﻿# FP Browser · 指纹浏览器
+﻿[![CI](https://github.com/yanzaocheng/fp-browser/actions/workflows/ci.yml/badge.svg)](https://github.com/yanzaocheng/fp-browser/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/yanzaocheng/fp-browser?label=portable)](https://github.com/yanzaocheng/fp-browser/releases)
+# FP Browser · 指纹浏览器
 
 类 AdsPower 的多开指纹浏览器：每个「环境」是一个独立的 Chrome 实例，拥有独立的 Cookie / 缓存 / 登录状态、独立的指纹和独立的代理；带管理界面和兼容 AdsPower Local API 的自动化接口。
 
@@ -8,6 +10,11 @@
 
 ```bash
 npm run package          # = node scripts/package.mjs --zip
+```
+
+不想自己构建就直接下 Release 里的 `fp-browser-<版本>.zip`（打 tag 时由 GitHub Actions 自动构建并附在 Release 上）。
+
+```bash
 ```
 
 产物：
