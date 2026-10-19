@@ -11,4 +11,5 @@ node_modules/
 *.log
 *.tmp
 scripts/site-*.txt
-scripts/*.pngscripts/launcher-argv.json
+scripts/*.png
+scripts/launcher-argv.json

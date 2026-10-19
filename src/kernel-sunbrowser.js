@@ -381,7 +381,11 @@ export function buildSunBrowserArgs({ userDataDir, profile, rt, prepared, proxyA
   }
   if (rt.userAgent) overrides.set('--user-agent=', `--user-agent=${rt.userAgent}`);
 
-  const tokens = [...tokenize(browserTpl), ...tokenize(protectedTpl)].map((t) => t.split(srcDir).join(userDataDir).split(srcName).join(profile.id));
+  const tokens = [...tokenize(browserTpl), ...tokenize(protectedTpl)].map((t) =>
+    t
+      .split('{{PROFILE_DIR}}').join(userDataDir)
+      .split(srcDir).join(userDataDir)
+      .split(srcName).join(profile.id));
   const args = [];
   const used = new Set();
   for (const t of tokens) {
