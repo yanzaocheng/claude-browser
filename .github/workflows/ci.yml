@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: 测试（Linux + 无头 Chrome）
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # 项目零依赖：不用 npm install，直接跑测试
+      - name: 运行测试
+        run: node --test "test/*.test.js"
+
+  package:
+    name: 便携包构建（Windows）
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 打包
+        run: node scripts/package.mjs --zip
+
+      - name: 校验产物
+        shell: pwsh
+        run: |
+          $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          $zip = "dist/fp-browser-$version.zip"
+          if (-not (Test-Path $zip)) { throw "缺少 $zip" }
+          $entries = tar -tf $zip
+          if (-not ($entries -match 'node\.exe$')) { throw '压缩包里没有 node.exe' }
+          if (-not ($entries -match 'src/main\.js$')) { throw '压缩包里没有源码' }
+          "体积: {0:N1} MB" -f ((Get-Item $zip).Length / 1MB)
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fp-browser-portable
+          path: dist/*.zip
+          retention-days: 7
