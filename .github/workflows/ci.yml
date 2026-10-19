@@ -11,9 +11,9 @@ jobs:
     name: 测试（Linux + 无头 Chrome）
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
 
@@ -25,9 +25,9 @@ jobs:
     name: 便携包构建（Windows）
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
 
@@ -45,7 +45,7 @@ jobs:
           if (-not ($entries -match 'src/main\.js$')) { throw '压缩包里没有源码' }
           "体积: {0:N1} MB" -f ((Get-Item $zip).Length / 1MB)
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: fp-browser-portable
           path: dist/*.zip
