@@ -38,7 +38,8 @@ jobs:
           if (-not (Test-Path $zip)) { throw "缺少 $zip" }
           $entries = tar -tf $zip
           if (-not ($entries -match 'node\.exe$')) { throw '压缩包里没有 node.exe' }
-          if (-not ($entries -match '启动 FP Browser\.bat$')) { throw '压缩包里没有启动脚本' }
+          if (-not ($entries -match 'src/main\.js$')) { throw '压缩包里没有源码' }
+          if (-not ($entries -match 'public/app\.js$')) { throw '压缩包里没有界面' }
           "体积: {0:N1} MB" -f ((Get-Item $zip).Length / 1MB)
 
       - name: 创建 Release
