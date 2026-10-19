@@ -41,33 +41,28 @@ jobs:
           if (-not ($entries -match '启动 FP Browser\.bat$')) { throw '压缩包里没有启动脚本' }
           "体积: {0:N1} MB" -f ((Get-Item $zip).Length / 1MB)
 
-      - name: 写发布说明
-        shell: pwsh
-        run: |
-          $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
-          $notes = @"
-## FP Browser $version 便携版
-
-          解压后双击 `启动 FP Browser.bat` 即可使用：
-
-          - 不需要安装 Node（压缩包内含 `node.exe`）
-          - 不需要安装 Chrome：管理窗口默认用 Windows 自带的 Edge 开成独立应用窗口
-          - 环境默认用本机 Chrome / Edge 起浏览器；也可以在「设置 → 内核」切成 SunBrowser 内核
-          - 想用内核模式：先装过 AdsPower 客户端，然后 `node scripts/extract-kernel-assets.mjs` 抽一份种子配置
-
-数据保存在程序目录的 `data\` 下，整个文件夹可拷走/删除。
-"@
-          [System.IO.File]::WriteAllText("release-notes.md", $notes, (New-Object System.Text.UTF8Encoding($false)))
-
       - name: 创建 Release
         shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           $tag = "${{ github.ref_name }}"
-          if ("${{ github.event_name }}" -eq 'workflow_dispatch') { $tag = "${{ inputs.tag }}" }
+          if ('${{ github.event_name }}' -eq 'workflow_dispatch') { $tag = '${{ inputs.tag }}' }
           $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
           $zip = "dist/fp-browser-$version.zip"
+          $lines = @(
+            "## FP Browser $version 便携版",
+            "",
+            "解压后双击 启动 FP Browser.bat 即可使用：",
+            "",
+            "- 不需要安装 Node，压缩包内含 node.exe",
+            "- 不需要安装 Chrome：管理窗口默认用 Windows 自带的 Edge 开成独立应用窗口",
+            "- 环境默认用本机 Chrome 或 Edge；也可以在「设置 → 内核」切成 SunBrowser 内核",
+            "- 内核模式：先装过 AdsPower 客户端，再跑 node scripts/extract-kernel-assets.mjs 抽一份种子配置",
+            "",
+            "数据保存在程序目录的 data 子目录下，整个文件夹可拷走或删除。"
+          )
+          [System.IO.File]::WriteAllText("release-notes.md", ($lines -join "`n"), (New-Object System.Text.UTF8Encoding($false)))
           gh release view $tag *> $null
           if ($LASTEXITCODE -eq 0) {
             gh release upload $tag $zip --clobber
