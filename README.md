@@ -1,6 +1,6 @@
-﻿[![CI](https://github.com/yanzaocheng/fp-browser/actions/workflows/ci.yml/badge.svg)](https://github.com/yanzaocheng/fp-browser/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/yanzaocheng/fp-browser?label=portable)](https://github.com/yanzaocheng/fp-browser/releases)
-# FP Browser · 指纹浏览器
+﻿[![CI](https://github.com/yanzaocheng/claude-browser/actions/workflows/ci.yml/badge.svg)](https://github.com/yanzaocheng/claude-browser/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/yanzaocheng/claude-browser?label=portable)](https://github.com/yanzaocheng/claude-browser/releases)
+# Claude Browser · 指纹浏览器
 
 类 AdsPower 的多开指纹浏览器：每个「环境」是一个独立的 Chrome 实例，拥有独立的 Cookie / 缓存 / 登录状态、独立的指纹和独立的代理；带管理界面和兼容 AdsPower Local API 的自动化接口。
 
@@ -12,7 +12,7 @@
 npm run package          # = node scripts/package.mjs --zip
 ```
 
-不想自己构建就直接下 Release 里的 `fp-browser-<版本>.zip`（打 tag 时由 GitHub Actions 自动构建并附在 Release 上）。
+不想自己构建就直接下 Release 里的 `claude-browser-<版本>.zip`（打 tag 时由 GitHub Actions 自动构建并附在 Release 上）。
 
 ```bash
 ```
@@ -20,15 +20,15 @@ npm run package          # = node scripts/package.mjs --zip
 产物：
 
 ```
-dist/fp-browser-0.1.0/            88 MB   ← 直接拷给别人的文件夹
+dist/claude-browser-0.1.0/            88 MB   ← 直接拷给别人的文件夹
    ├ node.exe                     （Node 运行时，自带，无需安装）
    ├ src/  public/  assets/
-   ├ 启动 FP Browser.bat
+   ├ 启动 Claude Browser.bat
    └ 使用说明.txt
-dist/fp-browser-0.1.0.zip         33 MB   ← 发这个
+dist/claude-browser-0.1.0.zip         33 MB   ← 发这个
 ```
 
-对方双击 `启动 FP Browser.bat` 就能用：管理窗口用**系统自带的 Edge** 以 `--app` 方式打开（Windows 10/11
+对方双击 `启动 Claude Browser.bat` 就能用：管理窗口用**系统自带的 Edge** 以 `--app` 方式打开（Windows 10/11
 必装 Edge，所以不装 Chrome 也有独立窗口）；环境默认用本机 Chrome/Edge 起浏览器，也可以在「设置 → 内核」
 切成 SunBrowser 内核（内核从 AdsPower CDN 下，不依赖本机 Chrome）。
 

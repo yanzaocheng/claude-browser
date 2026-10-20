@@ -1,11 +1,11 @@
 {
-  "name": "fp-browser",
+  "name": "claude-browser",
   "version": "0.1.0",
-  "description": "类 AdsPower 的指纹浏览器：多环境隔离、指纹伪装、代理链、AdsPower 兼容本地 API",
+  "description": "Claude Browser：类 AdsPower 的指纹浏览器，支持多环境隔离、指纹伪装、代理链和兼容 AdsPower 的本地 API",
   "type": "module",
   "main": "src/main.js",
   "bin": {
-    "fp-browser": "src/main.js"
+    "claude-browser": "src/main.js"
   },
   "scripts": {
     "start": "node src/main.js",

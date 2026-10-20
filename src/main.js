@@ -9,7 +9,13 @@ import { resolveShell } from './browser-finder.js';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 function parseArgs(argv) {
-  const opts = { port: Number(process.env.FPB_PORT) || DEFAULT_PORT, dataDir: process.env.FPB_DATA_DIR || path.join(ROOT, 'data'), open: true, debug: false, shell: process.env.FPB_SHELL || '' };
+  const opts = {
+    port: Number(process.env.CLAUDE_BROWSER_PORT || process.env.FPB_PORT) || DEFAULT_PORT,
+    dataDir: process.env.CLAUDE_BROWSER_DATA_DIR || process.env.FPB_DATA_DIR || path.join(ROOT, 'data'),
+    open: true,
+    debug: false,
+    shell: process.env.CLAUDE_BROWSER_SHELL || process.env.FPB_SHELL || '',
+  };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--port') opts.port = Number(argv[++i]);
@@ -85,12 +91,12 @@ async function listen(app, preferred, explicit) {
 }
 
 const opts = parseArgs(process.argv.slice(2));
-const explicitPort = process.argv.some((a) => a === '--port' || a.startsWith('--port=')) || !!process.env.FPB_PORT;
+const explicitPort = process.argv.some((a) => a === '--port' || a.startsWith('--port=')) || !!(process.env.CLAUDE_BROWSER_PORT || process.env.FPB_PORT);
 const portFile = path.join(opts.dataDir, '.port');
 // an instance using this data directory may already run on a fallback port
 const lastPort = Number(fs.existsSync(portFile) && fs.readFileSync(portFile, 'utf8'));
 if (lastPort && (await alreadyRunning(lastPort))) {
-  console.log(`FP Browser 已在运行: http://127.0.0.1:${lastPort}`);
+  console.log(`Claude Browser 已在运行: http://127.0.0.1:${lastPort}`);
   if (opts.open) openWindow(`http://127.0.0.1:${lastPort}/`, opts.dataDir, '');
   process.exit(0);
 }
@@ -99,7 +105,7 @@ const app = createApp({ dataDir: opts.dataDir, port: opts.port, debug: opts.debu
 try {
   const r = await listen(app, opts.port, explicitPort);
   if (r?.running) {
-    console.log(`FP Browser 已在运行: http://127.0.0.1:${r.running}`);
+    console.log(`Claude Browser 已在运行: http://127.0.0.1:${r.running}`);
     if (opts.open) openWindow(`http://127.0.0.1:${r.running}/`, opts.dataDir, app.store.settings.browserPath);
     process.exit(0);
   }
@@ -110,7 +116,7 @@ try {
 fs.writeFileSync(portFile, String(new URL(app.baseUrl).port));
 
 const actualPort = Number(new URL(app.baseUrl).port);
-console.log(`FP Browser 指纹浏览器已启动
+console.log(`Claude Browser 指纹浏览器已启动
   管理界面:  ${app.baseUrl}/
   本地 API:  ${app.baseUrl}/api/v1/...   (兼容 AdsPower Local API)
   数据目录:  ${opts.dataDir}${actualPort !== opts.port ? `\n  注意: 端口 ${opts.port} 被系统保留或占用，已改用 ${actualPort}；AdsPower 脚本请把端口改为 ${actualPort}` : ''}

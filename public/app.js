@@ -1,4 +1,4 @@
-﻿// FP Browser management UI (no build step, no dependencies).
+﻿// Claude Browser management UI (no build step, no dependencies).
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];

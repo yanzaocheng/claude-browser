@@ -38,7 +38,7 @@ jobs:
         shell: pwsh
         run: |
           $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
-          $zip = "dist/fp-browser-$version.zip"
+          $zip = "dist/claude-browser-$version.zip"
           if (-not (Test-Path $zip)) { throw "缺少 $zip" }
           $entries = tar -tf $zip
           if (-not ($entries -match 'node\.exe$')) { throw '压缩包里没有 node.exe' }
@@ -47,6 +47,6 @@ jobs:
 
       - uses: actions/upload-artifact@v7
         with:
-          name: fp-browser-portable
+          name: claude-browser-portable
           path: dist/*.zip
           retention-days: 7

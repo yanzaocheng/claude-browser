@@ -4,8 +4,8 @@
  * the system's Edge / Chrome in --app mode, and profiles can run on either the browser or the
  * SunBrowser kernel, so the recipient does not need Node or Chrome.
  *
- *   node scripts/package.mjs            # dist/fp-browser-<version>/
- *   node scripts/package.mjs --zip      # ... plus dist/fp-browser-<version>.zip
+ *   node scripts/package.mjs            # dist/claude-browser-<version>/
+ *   node scripts/package.mjs --zip      # ... plus dist/claude-browser-<version>.zip
  *   node scripts/package.mjs --no-node  # skip node.exe (recipient already has Node >= 22)
  */
 import fs from 'node:fs';
@@ -20,7 +20,7 @@ const withZip = args.includes('--zip');
 const withNode = !args.includes('--no-node');
 
 const outRoot = path.join(ROOT, 'dist');
-const dir = path.join(outRoot, `fp-browser-${pkg.version}`);
+const dir = path.join(outRoot, `claude-browser-${pkg.version}`);
 fs.rmSync(dir, { recursive: true, force: true });
 fs.mkdirSync(dir, { recursive: true });
 
@@ -40,7 +40,7 @@ const bat = [
   '@echo off',
   'chcp 65001 >nul',
   'cd /d "%~dp0"',
-  'echo FP Browser 正在启动，窗口马上就出来…（这个黑框是服务日志，关掉它就会关闭所有环境）',
+  'echo Claude Browser 正在启动，窗口马上就出来…（这个黑框是服务日志，关掉它就会关闭所有环境）',
   'echo.',
   withNode ? 'node.exe src\\main.js' : 'node src\\main.js',
   'echo.',
@@ -48,12 +48,12 @@ const bat = [
   'pause >nul',
   '',
 ].join('\r\n');
-fs.writeFileSync(path.join(dir, '启动 FP Browser.bat'), '\uFEFF' + bat, 'utf8');
+fs.writeFileSync(path.join(dir, '启动 Claude Browser.bat'), '\uFEFF' + bat, 'utf8');
 
 const readme = [
-  'FP Browser 指纹浏览器 · 便携版',
+  'Claude Browser 指纹浏览器 · 便携版',
   '',
-  '1) 双击「启动 FP Browser.bat」',
+  '1) 双击「启动 Claude Browser.bat」',
   '2) 会自动弹出管理窗口（Windows 优先用系统自带的 Edge，不需要另装 Chrome）',
   '3) 环境默认用系统 Chrome / Edge 起浏览器；也可以在「设置 → 内核」里切成 SunBrowser 内核',
   '',
@@ -76,9 +76,11 @@ console.log(`输出目录: ${dir}`);
 console.log(`  体积: ${mb(size(dir))}${withNode ? '（含 node.exe）' : '（不含 node.exe）'}`);
 
 if (withZip) {
-  const zip = path.join(outRoot, `fp-browser-${pkg.version}.zip`);
+  const zipName = `claude-browser-${pkg.version}.zip`;
+  const zip = path.join(outRoot, zipName);
   fs.rmSync(zip, { force: true });
-  const r = spawnSync('tar', ['-a', '-cf', zip, '-C', dir, '.'], { encoding: 'utf8' });
+  // Keep the archive path relative: Windows tar interprets an absolute `D:\\...` path as a remote archive.
+  const r = spawnSync('tar', ['-a', '-cf', path.join('..', zipName), '.'], { cwd: dir, encoding: 'utf8' });
   if (r.status !== 0) throw new Error(`打包失败: ${r.stderr || r.stdout}`);
   console.log(` 压缩包: ${zip}  ${mb(fs.statSync(zip).size)}`);
 }

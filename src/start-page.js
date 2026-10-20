@@ -65,7 +65,7 @@ td:first-child{color:#6b7280;width:120px;white-space:nowrap;padding-right:10px}t
     row('ua', 'WebGL 渲染器', gl.getParameter(ext.UNMASKED_RENDERER_WEBGL));
   } catch (e) { row('ua', 'WebGL', '不可用'); }
   const c = document.createElement('canvas'); c.width = 240; c.height = 60; const x = c.getContext('2d');
-  x.textBaseline = 'top'; x.font = '16px Arial'; x.fillStyle = '#f60'; x.fillRect(100, 1, 62, 20); x.fillStyle = '#069'; x.fillText('FP Browser 指纹 😃', 2, 15);
+  x.textBaseline = 'top'; x.font = '16px Arial'; x.fillStyle = '#f60'; x.fillRect(100, 1, 62, 20); x.fillStyle = '#069'; x.fillText('Claude Browser 指纹 😃', 2, 15);
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(c.toDataURL()));
   row('ua', 'Canvas 哈希', [...new Uint8Array(buf)].slice(0, 12).map(b => b.toString(16).padStart(2, '0')).join(''));
 })();
